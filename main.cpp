@@ -116,12 +116,45 @@ int main (int argc, char *argv[])
                     case 0x00EE:
                         cpu.ret();
                         break;
+                    
+                    // Scroll the screen 4 pixels right
+                    case 0x00FB:
+                        gpu.scrollRight();
+                        break;
+                    
+                    // Scroll the screen 4 pixels left
+                    case 0x00FC:
+                        gpu.scrollLeft();
+                        break;
+
+                    // Exit the program
+                    case 0x00FD:
+                        gpu.closeWindow();
+                        break;
+                    
+                    // Set isExtended to false
+                    case 0x00FE:
+                        gpu.setIsExtended(false);
+                        break;
+                    
+                    // Set isExtended to true
+                    case 0x00FF:
+                        gpu.setIsExtended(true);
+                        break;
 
                     default:
-                    // Call the program at address NNN
-                        address = opcode & 0x0FFF;
-                        cpu.call(address);
-                        break;
+                        if ((opcode & 0x00F0) == 0x00C0){
+                            // Scoll the screen N pixels down
+                            val = (opcode & 0x000F);
+                            gpu.scrollDown(val);
+                            break;
+                        }
+                        else{
+                        // Call the program at address NNN
+                            address = opcode & 0x0FFF;
+                            cpu.call(address);
+                            break;
+                        } 
                 }
                 break;
 

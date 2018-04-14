@@ -13,8 +13,11 @@ class Gpu
         void clear();
         unsigned char waitEvent(sf::Event *event);
         unsigned short pollEvent(sf::Event *event);
-        void scrollDown(unsigned char value);
+        void scrollDown(unsigned char n);
+        void scrollLeft();
+        void scrollRight();
         void setIsExtended(bool isExtended);
+        void closeWindow();
 
     private:
         bool isExtended;

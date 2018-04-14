@@ -76,8 +76,97 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
 
 }
 
+// Scroll the screen N lines down
 void Gpu::scrollDown(unsigned char n){
+    for (int j = 63; j >= n; j--){
+        for (int i = 0; i < 128; i++){
+            this->gfx[i][j] = this->gfx[i][j-n];
+        }
+    }
 
+    for (int i = 0; i < 128; i++){
+        for(int j = 0; j < n; j++){
+            this->gfx[i][j] = 0;
+        }
+    }
+
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
+            if(this->gfx[i][j] == 0){
+                this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
+                this->window.draw(this->pixels[i][j]);
+            }
+            else{
+                this->pixels[i][j].setFillColor(sf::Color(255, 255, 255));
+                this->window.draw(this->pixels[i][j]);
+            }
+            
+        }
+    }
+
+    this->window.display();
+}
+
+// Scroll the screen 4 pixels left
+void Gpu::scrollLeft(){
+    for (int j = 0; j < 64; j++){
+        for (int i = 127; i >= 4; i--){
+            this->gfx[i][j] = this->gfx[i-4][j];
+        }
+    }
+
+    for (int i = 0; i < 4; i++){
+        for(int j = 0; j < 64; j++){
+            this->gfx[i][j] = 0;
+        }
+    }
+
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
+            if(this->gfx[i][j] == 0){
+                this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
+                this->window.draw(this->pixels[i][j]);
+            }
+            else{
+                this->pixels[i][j].setFillColor(sf::Color(255, 255, 255));
+                this->window.draw(this->pixels[i][j]);
+            }
+            
+        }
+    }
+
+    this->window.display();
+}
+
+// Scroll the screen 4 pixels right
+void Gpu::scrollRight(){
+    for (int j = 0; j < 64; j++){
+        for (int i = 0; i < 124; i++){
+            this->gfx[i][j] = this->gfx[i+4][j];
+        }
+    }
+
+    for (int i = 124; i < 128; i++){
+        for(int j = 0; j < 64; j++){
+            this->gfx[i][j] = 0;
+        }
+    }
+
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
+            if(this->gfx[i][j] == 0){
+                this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
+                this->window.draw(this->pixels[i][j]);
+            }
+            else{
+                this->pixels[i][j].setFillColor(sf::Color(255, 255, 255));
+                this->window.draw(this->pixels[i][j]);
+            }
+            
+        }
+    }
+
+    this->window.display();
 }
 
 // Check whether the window is openned
@@ -283,4 +372,8 @@ unsigned short Gpu::pollEvent(sf::Event *event){
 
 void Gpu::setIsExtended(bool isExtended){
     this->isExtended = isExtended;
+}
+
+void Gpu::closeWindow(){
+    this->window.close();
 }
