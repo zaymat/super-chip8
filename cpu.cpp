@@ -86,6 +86,10 @@ Cpu::Cpu(string filename, int load_quirk, int shift_quirk){
             key[i] = 0;
         }
 
+        for(int i = 0; i<8; i++){
+            R[i] = 0;
+        }
+
         // Set timers
         delay_timer = 60;
         sound_timer = 60;
@@ -172,7 +176,7 @@ void Cpu::BitXor(unsigned char x, unsigned char y){
 
 void Cpu::addReg(unsigned char x, unsigned char y){
     this->V[15] = (this->V[x] + this->V[y]) / 256;
-    this->V[x] =  this->V[y];
+    this->V[x] +=  this->V[y];
     this->pc += 2;
 }
 
@@ -261,6 +265,10 @@ void Cpu::setSound(unsigned char x){
 
 void Cpu::addI(unsigned char x){
     this->index += this->V[x];
+    if (this->index >= 0xFFF){
+        this->V[15] = 1;
+        this->index %= 0x1000;
+    }
     this->pc += 2;
 }
 

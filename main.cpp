@@ -102,7 +102,7 @@ int main (int argc, char *argv[])
         
         // Fetching the opcode
         opcode = cpu.getMemory(cpu.getPc()) << 8 | cpu.getMemory(cpu.getPc() + 1);
-        printf("%x\n", opcode);
+        printf("%x:%x\n", opcode, cpu.getPc());
 
         // Parsing the opcode
         switch(opcode & 0xF000){
@@ -155,14 +155,13 @@ int main (int argc, char *argv[])
                             val = (opcode & 0x000F);
                             gpu.scrollDown(val);
                             cpu.setPc(cpu.getPc() + 2);
-                            break;
                         }
                         else{
                         // Call the program at address NNN
                             address = opcode & 0x0FFF;
                             cpu.call(address);
-                            break;
                         } 
+                        break;
                 }
                 break;
 
@@ -437,7 +436,7 @@ int main (int argc, char *argv[])
     }  
 
     // Try to emulate 50 Hz frequency of CPU
-   usleep(2000);
+   //usleep(2000);
     }
     
     return 0;
