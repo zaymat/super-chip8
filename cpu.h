@@ -34,9 +34,12 @@ class Cpu
         void setSound(unsigned char x);
         void addI(unsigned char x);
         void getFont(unsigned char x);
+        void getFont16(unsigned char x);
         void BCD(unsigned char x);
         void regDump(unsigned char x);
         void regLoad(unsigned char x);
+        void userRegDump(unsigned char x);
+        void userRegLoad(unsigned char x);
         void ifKey(unsigned char x);
         void ifNotKey(unsigned char x);
 
@@ -57,6 +60,7 @@ class Cpu
         unsigned short pc;
         unsigned char memory[4096];
         unsigned char V[16];
+        unsigned char R[8];
         std::stack<unsigned short> stack;
         unsigned char delay_timer;
         unsigned char sound_timer;

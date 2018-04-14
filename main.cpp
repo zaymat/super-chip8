@@ -102,7 +102,7 @@ int main (int argc, char *argv[])
         
         // Fetching the opcode
         opcode = cpu.getMemory(cpu.getPc()) << 8 | cpu.getMemory(cpu.getPc() + 1);
-
+        printf("%x\n", opcode);
         // Parsing the opcode
         switch(opcode & 0xF000){
             case 0x0000:
@@ -364,19 +364,34 @@ int main (int argc, char *argv[])
                         cpu.getFont(x);
                         break;
                     
+                    case 0x0030:
+                    // Get the 16x16 font which number is stored in V[x]
+                        cpu.getFont16(x);
+                        break;
+                    
                     case 0x0033:
                     // Store BCD representation of V[x] at the address stored in the index
                         cpu.BCD(x);
                         break;
                     
                     case 0x0055:
-                    // Dump the x+1 registries in memory starting at the address sotred in the index
+                    // Dump the x+1 registries in memory starting at the address stored in the index
                         cpu.regDump(x);
                         break;
                     
                     case 0x0065:
-                    // Load the x+1 registries in memory starting at the address sotred in the index
+                    // Load the x+1 registries in memory starting at the address stored in the index
                         cpu.regLoad(x);
+                        break;
+                    
+                    case 0x0075:
+                    // Dump the x+1 registries in HP-RPL user flags
+                        cpu.userRegDump(x);
+                        break;
+                    
+                    case 0x0085:
+                    // Load the x+1 registries in HP-RPL user flags in flags
+                        cpu.userRegLoad(x);
                         break;
                     
                     default:
