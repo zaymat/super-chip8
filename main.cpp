@@ -92,6 +92,7 @@ int main (int argc, char *argv[])
     unsigned short address, opcode, index;
     unsigned char height;
     vector<unsigned char> sprite;
+    vector<unsigned short> SChipSprite;
 
 
     // Event Loop (note : events are caught by the Gpu)
@@ -291,13 +292,23 @@ int main (int argc, char *argv[])
                 y = (opcode & 0x00F0) >> 4;
                 height = opcode & 0x000F;
                 index = cpu.getIndex();
-                sprite.clear();
 
-                for(int i = 0; i < height; i++){
-                    sprite.push_back(cpu.getMemory(index + i));
+                if (height == 0 && gpu.getIsExtended()){
+                    SChipSprite.clear();
+                    for(int i = 0; i < 32; i += 2){
+                        SChipSprite.push_back(cpu.getMemory(index + i) << 8 | cpu.getMemory(index + i + 1));
+                    }
+                    val =  gpu.SChipDraw(cpu.getReg(x), cpu.getReg(y), SChipSprite);
+                    cpu.set(15, val);
                 }
-                val =  gpu.draw(cpu.getReg(x), cpu.getReg(y), height, sprite);
-                cpu.set(15, val);
+                else{
+                    sprite.clear();
+                    for(int i = 0; i < height; i++){
+                        sprite.push_back(cpu.getMemory(index + i));
+                    }
+                    val =  gpu.draw(cpu.getReg(x), cpu.getReg(y), height, sprite);
+                    cpu.set(15, val);
+                }
 
                 break;
             

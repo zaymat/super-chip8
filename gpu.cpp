@@ -38,6 +38,7 @@ Gpu::Gpu(std::string filename){
 unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, vector<unsigned char> sprite){
     unsigned char VF(0);
     int xi,yi;
+
     for (int j = 0; j < height; j++)
     {
         yi = (y + j);
@@ -75,6 +76,48 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
     return VF;
 
 }
+
+unsigned char Gpu::SChipDraw(unsigned char x, unsigned char y, std::vector<unsigned short> sprite){
+    unsigned char VF(0);
+    int xi,yi;
+
+    for (int j = 0; j < 16; j++)
+    {
+        yi = (y + j);
+        for(int i = 0; i < 16; i++)
+        {
+            xi = (x + i);
+            if((sprite[j] & (0x8000 >> i)) != 0)
+            {
+                if (x < 64*(1 + this->isExtended) && y < 32*(1+this->isExtended)){
+                    if(this->gfx[xi][yi] == 1){
+                        VF = 1;                   
+                    }
+                    this->gfx[xi][yi] ^= 1;
+                }
+            }
+        }
+    }
+
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
+            if(this->gfx[i][j] == 0){
+                this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
+                this->window.draw(this->pixels[i][j]);
+            }
+            else{
+                this->pixels[i][j].setFillColor(sf::Color(255, 255, 255));
+                this->window.draw(this->pixels[i][j]);
+            }
+            
+        }
+    }
+
+    this->window.display();
+
+    return VF;
+}
+
 
 // Scroll the screen N lines down
 void Gpu::scrollDown(unsigned char n){
@@ -376,4 +419,8 @@ void Gpu::setIsExtended(bool isExtended){
 
 void Gpu::closeWindow(){
     this->window.close();
+}
+
+bool Gpu::getIsExtended(){
+    return this->isExtended;
 }

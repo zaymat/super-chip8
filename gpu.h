@@ -9,6 +9,7 @@ class Gpu
     public:
         Gpu(std::string filename);
         unsigned char draw(unsigned char x, unsigned char y, unsigned char height, std::vector<unsigned char> sprite);
+        unsigned char SChipDraw(unsigned char x, unsigned char y, std::vector<unsigned short> sprite);
         bool isOpen();
         void clear();
         unsigned char waitEvent(sf::Event *event);
@@ -18,6 +19,7 @@ class Gpu
         void scrollRight();
         void setIsExtended(bool isExtended);
         void closeWindow();
+        bool getIsExtended();
 
     private:
         bool isExtended;
