@@ -13,11 +13,13 @@ class Gpu
         void clear();
         unsigned char waitEvent(sf::Event *event);
         unsigned short pollEvent(sf::Event *event);
-        
+        void scrollDown(unsigned char value);
+        void setIsExtended(bool isExtended);
 
     private:
-        unsigned char gfx[64][32];
-        sf::RectangleShape pixels[64][32];
+        bool isExtended;
+        unsigned char gfx[128][64];
+        sf::RectangleShape pixels[128][64];
         sf::RenderWindow window;
 
 };

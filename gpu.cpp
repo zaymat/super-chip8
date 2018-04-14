@@ -15,14 +15,14 @@ Gpu::Gpu(std::string filename){
     title = "Chip 8 : " + filename;
 
     // Create the window
-    this->window.create(sf::VideoMode(640, 320), title);
+    this->window.create(sf::VideoMode(1280, 640), title);
     this->window.clear(sf::Color::Black);
 
 
     // Create CHIP 8 pixels. gfx stores the state of the pixel and pixels the SFML squares
     // representing the pixels (there, the screen is scaled by 10 to be more visible)
-    for(int i = 0; i < 64; i++){
-        for(int j = 0; j < 32; j++){
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
             gfx[i][j] = 0;
             pixels[i][j].setSize(sf::Vector2f(10, 10));
             pixels[i][j].setFillColor(sf::Color(0, 0, 0));
@@ -30,6 +30,7 @@ Gpu::Gpu(std::string filename){
             this->window.draw(this->pixels[i][j]);
         }
     }
+    this->isExtended = true;
     this->window.display();
 }
 
@@ -45,7 +46,7 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
             xi = (x + i);
             if((sprite[j] & (0x80 >> i)) != 0)
             {
-                if (x < 64 && y < 32){
+                if (x < 64*(1 + this->isExtended) && y < 32*(1+this->isExtended)){
                     if(this->gfx[xi][yi] == 1){
                         VF = 1;                   
                     }
@@ -55,8 +56,8 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
         }
     }
 
-    for(int i = 0; i < 64; i++){
-        for(int j = 0; j < 32; j++){
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
             if(this->gfx[i][j] == 0){
                 this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
                 this->window.draw(this->pixels[i][j]);
@@ -75,6 +76,10 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
 
 }
 
+void Gpu::scrollDown(unsigned char n){
+
+}
+
 // Check whether the window is openned
 bool Gpu::isOpen(){
     return this->window.isOpen();
@@ -83,8 +88,8 @@ bool Gpu::isOpen(){
 // Wipe the screen
 void Gpu::clear(){
     this->window.clear();
-    for(int i = 0; i < 64; i++){
-        for(int j = 0; j < 32; j++){
+    for(int i = 0; i < 128; i++){
+        for(int j = 0; j < 64; j++){
             this->pixels[i][j].setFillColor(sf::Color(0, 0, 0));
             this->gfx[i][j] = 0;
             this->window.draw(this->pixels[i][j]);     
@@ -274,4 +279,8 @@ unsigned short Gpu::pollEvent(sf::Event *event){
     }
 
     return 0x00FF;
+}
+
+void Gpu::setIsExtended(bool isExtended){
+    this->isExtended = isExtended;
 }
