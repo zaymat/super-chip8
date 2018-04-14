@@ -89,7 +89,7 @@ unsigned char Gpu::SChipDraw(unsigned char x, unsigned char y, std::vector<unsig
             xi = (x + i);
             if((sprite[j] & (0x8000 >> i)) != 0)
             {
-                if (x < 64*(1 + this->isExtended) && y < 32*(1+this->isExtended)){
+                if (x < 128 && y < 64){
                     if(this->gfx[xi][yi] == 1){
                         VF = 1;                   
                     }
@@ -424,3 +424,4 @@ void Gpu::closeWindow(){
 bool Gpu::getIsExtended(){
     return this->isExtended;
 }
+

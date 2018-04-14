@@ -103,6 +103,7 @@ int main (int argc, char *argv[])
         // Fetching the opcode
         opcode = cpu.getMemory(cpu.getPc()) << 8 | cpu.getMemory(cpu.getPc() + 1);
         printf("%x\n", opcode);
+
         // Parsing the opcode
         switch(opcode & 0xF000){
             case 0x0000:
@@ -121,26 +122,31 @@ int main (int argc, char *argv[])
                     // Scroll the screen 4 pixels right
                     case 0x00FB:
                         gpu.scrollRight();
+                        cpu.setPc(cpu.getPc() + 2);
                         break;
                     
                     // Scroll the screen 4 pixels left
                     case 0x00FC:
                         gpu.scrollLeft();
+                        cpu.setPc(cpu.getPc() + 2);
                         break;
 
                     // Exit the program
                     case 0x00FD:
                         gpu.closeWindow();
+                        cpu.setPc(cpu.getPc() + 2);
                         break;
                     
                     // Set isExtended to false
                     case 0x00FE:
                         gpu.setIsExtended(false);
+                        cpu.setPc(cpu.getPc() + 2);
                         break;
                     
                     // Set isExtended to true
                     case 0x00FF:
                         gpu.setIsExtended(true);
+                        cpu.setPc(cpu.getPc() + 2);
                         break;
 
                     default:
@@ -148,6 +154,7 @@ int main (int argc, char *argv[])
                             // Scoll the screen N pixels down
                             val = (opcode & 0x000F);
                             gpu.scrollDown(val);
+                            cpu.setPc(cpu.getPc() + 2);
                             break;
                         }
                         else{
