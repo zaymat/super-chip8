@@ -102,7 +102,7 @@ int main (int argc, char *argv[])
         
         // Fetching the opcode
         opcode = cpu.getMemory(cpu.getPc()) << 8 | cpu.getMemory(cpu.getPc() + 1);
-        printf("%x:%x\n", opcode, cpu.getPc());
+        //printf("%x:%x\n", opcode, cpu.getPc());
 
         // Parsing the opcode
         switch(opcode & 0xF000){

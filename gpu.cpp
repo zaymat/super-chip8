@@ -47,7 +47,7 @@ unsigned char Gpu::draw(unsigned char x, unsigned char y, unsigned char height, 
             xi = (x + i);
             if((sprite[j] & (0x80 >> i)) != 0)
             {
-                if (x < 64*(1 + this->isExtended) && y < 32*(1+this->isExtended)){
+                if (xi < 64*(1 + this->isExtended) && yi < 32*(1+this->isExtended)){
                     if(this->gfx[xi][yi] == 1){
                         VF = 1;                   
                     }
@@ -89,7 +89,7 @@ unsigned char Gpu::SChipDraw(unsigned char x, unsigned char y, std::vector<unsig
             xi = (x + i);
             if((sprite[j] & (0x8000 >> i)) != 0)
             {
-                if (x < 128 && y < 64){
+                if (xi < 128 && yi < 64){
                     if(this->gfx[xi][yi] == 1){
                         VF = 1;                   
                     }
@@ -150,8 +150,8 @@ void Gpu::scrollDown(unsigned char n){
     this->window.display();
 }
 
-// Scroll the screen 4 pixels left
-void Gpu::scrollLeft(){
+// Scroll the screen 4 pixels right
+void Gpu::scrollRight(){
     for (int j = 0; j < 64; j++){
         for (int i = 127; i >= 4; i--){
             this->gfx[i][j] = this->gfx[i-4][j];
@@ -181,10 +181,10 @@ void Gpu::scrollLeft(){
     this->window.display();
 }
 
-// Scroll the screen 4 pixels right
-void Gpu::scrollRight(){
+// Scroll the screen 4 pixels left
+void Gpu::scrollLeft(){
     for (int j = 0; j < 64; j++){
-        for (int i = 0; i < 124; i++){
+        for (int i = 123; i >= 0; i--){
             this->gfx[i][j] = this->gfx[i+4][j];
         }
     }
